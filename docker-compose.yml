@@ -1,0 +1,29 @@
+
+services:
+  # Go 應用
+  go-app:
+    build: .
+    ports:
+      - "8080:8080"  # 映射容器的 8080 端口到主機的 8080 端口
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: go_crud
+    depends_on:
+      - mysql
+
+  # MySQL 資料庫
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: go_crud
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

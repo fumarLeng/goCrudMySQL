@@ -2,21 +2,11 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"goCrudMySQL/controller"
+	"goCrudMySQL/internal/user"
 )
 
-func NewRouter(u *controller.UserController) *gin.Engine {
-	r := gin.Default()
+func New(r *gin.Engine, uh *user.Handler) *gin.Engine {
 	v1 := r.Group("/api/v1")
-	{
-		users := v1.Group("/users")
-		{
-			users.POST("", u.Create)
-			users.GET("", u.List)
-			users.GET("/:id", u.Get)
-			users.PUT("/:id", u.Update)
-			users.DELETE("/:id", u.Delete)
-		}
-	}
+	uh.Register(v1)
 	return r
 }
