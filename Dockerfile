@@ -19,6 +19,9 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 
 COPY --from=builder /app/myapp ./myapp
+COPY wait-for-mysql.sh ./wait-for-mysql.sh
+
+RUN chmod +x ./wait-for-mysql.sh ./myapp
 
 ENV DB_HOST=mysql
 ENV DB_PORT=3306
@@ -28,4 +31,4 @@ ENV DB_NAME=go_crud
 
 EXPOSE 8080
 
-CMD ["./myapp"]
+CMD ["./wait-for-mysql.sh"]
