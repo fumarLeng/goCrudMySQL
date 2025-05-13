@@ -1,7 +1,7 @@
 // @title Go CRUD API
 // @version 1.0
-// @description  測試GO語言CRUD
-// @host localhost:8080
+// @description  GO語言  CRUD_TEST
+// @host localhost:8088
 // @BasePath /api/v1
 
 package main

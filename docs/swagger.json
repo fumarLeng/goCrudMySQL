@@ -1,12 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "測試GO語言CRUD",
+        "description": "GO語言  CRUD_TEST",
         "title": "Go CRUD API",
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "localhost:8088",
     "basePath": "/api/v1",
     "paths": {
         "/users": {
