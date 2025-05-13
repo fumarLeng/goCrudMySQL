@@ -31,8 +31,14 @@ goCrudMySQL/
 
 ---
 
-###  1.dev 啟動（原始碼專案）
+### 1. 在本機直接開發/測試
 
+```bash
+go mod tidy            # 下載 Go 依賴
+go run main.go         # 啟動 API（需建立 MySQL 資料）
+```
+
+### 2. 開發者（本地 build image）
 ```bash
 git clone https://github.com/fumarLeng/goCrudMySQL.git
 cd goCrudMySQL
@@ -44,11 +50,11 @@ docker-compose -f docker-compose-dev.yml up
 
 ---
 
-###  2.zip部署啟動
+###  3. zip檔案透過 docker-compose 啟動
 
 參考 `go-crud-deploy.zip`，使用者可於任何有安裝 Docker 的環境啟動容器並測試 API。
 
-📦 [下載部署壓縮包](https://github.com/user-attachments/files/20184588/go-crud-deploy.zip)
+📦📦 [下載壓縮檔](https://github.com/user-attachments/files/20184588/go-crud-deploy.zip)📦📦
 
 ```bash
 # 解壓 zip
@@ -64,6 +70,6 @@ docker compose up
 啟動完成打開：  
 [http://localhost:8088/swagger/index.html](http://localhost:8088/swagger/index.html)
 
-若 zip 部署後無資料，請執行 `docker compose down -v` 清除舊的資料 volume，再重新載入 init.sql 的假資料。
+若 zip 啟動後 DB 沒有資料，執行 `docker compose down -v` 清除舊的資料 volume，再重新載入 init.sql 的假資料。
 
 ---
