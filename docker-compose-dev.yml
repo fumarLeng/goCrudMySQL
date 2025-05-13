@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   go-app:
+    image: fumarleo/go-crud-api:latest #推上 Docker Hub 的 image
     build: .
     ports:
       - "8088:8080"

@@ -27,10 +27,10 @@ func (handler *Handler) Register(routerGroup *gin.RouterGroup) {
 // @Summary 建立使用者
 // @Description 新增一筆使用者資料
 // @Tags users
-// @Param user body User true "使用者資料"
+// @Param user body CreateUserRq true "使用者資料"
 // @Router /users [post]
 func (handler *Handler) create(c *gin.Context) {
-	var in User
+	var in CreateUserRq
 	if err := c.ShouldBindJSON(&in); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

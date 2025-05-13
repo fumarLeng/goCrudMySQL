@@ -39,7 +39,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.User"
+                            "$ref": "#/definitions/user.CreateUserRq"
                         }
                     }
                 ],
@@ -119,6 +119,25 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "user.CreateUserRq": {
+            "type": "object",
+            "required": [
+                "email",
+                "name"
+            ],
+            "properties": {
+                "email": {
+                    "description": "使用者 Email",
+                    "type": "string",
+                    "example": "leo@example.com"
+                },
+                "name": {
+                    "description": "使用者名稱",
+                    "type": "string",
+                    "example": "Leo"
+                }
+            }
+        },
         "user.User": {
             "type": "object",
             "required": [

@@ -10,3 +10,9 @@ type User struct {
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"createdAt" example:"2025-05-13T12:00:00Z"`                                         // 建立時間
 	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updatedAt" example:"2025-05-13T12:30:00Z"`                                         // 最後更新時間
 }
+
+// CreateUserRq 建立使用者的RQ
+type CreateUserRq struct {
+	Name  string `json:"name" binding:"required" example:"Leo"`                    // 使用者名稱
+	Email string `json:"email" binding:"required,email" example:"leo@example.com"` // 使用者 Email
+}

@@ -1,5 +1,19 @@
 basePath: /api/v1
 definitions:
+  user.CreateUserRq:
+    properties:
+      email:
+        description: 使用者 Email
+        example: leo@example.com
+        type: string
+      name:
+        description: 使用者名稱
+        example: Leo
+        type: string
+    required:
+    - email
+    - name
+    type: object
   user.User:
     properties:
       createdAt:
@@ -49,7 +63,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/user.User'
+          $ref: '#/definitions/user.CreateUserRq'
       responses: {}
       summary: 建立使用者
       tags:

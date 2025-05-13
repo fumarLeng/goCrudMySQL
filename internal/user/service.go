@@ -3,7 +3,7 @@ package user
 import "context"
 
 type Service interface {
-	Create(ctx context.Context, in User) (*User, error)
+	Create(ctx context.Context, in CreateUserRq) (*User, error)
 	List(ctx context.Context) ([]User, error)
 	Get(ctx context.Context, id uint) (*User, error)
 	Update(ctx context.Context, id uint, in User) (*User, error)
@@ -14,12 +14,17 @@ type svc struct{ repo Repository }
 
 func NewService(r Repository) Service { return &svc{r} }
 
-func (s *svc) Create(ctx context.Context, in User) (*User, error) {
-	if err := s.repo.Create(ctx, &in); err != nil {
+func (s *svc) Create(ctx context.Context, in CreateUserRq) (*User, error) {
+	u := User{
+		Name:  in.Name,
+		Email: in.Email,
+	}
+	if err := s.repo.Create(ctx, &u); err != nil {
 		return nil, err
 	}
-	return &in, nil
+	return &u, nil
 }
+
 func (s *svc) List(ctx context.Context) ([]User, error)        { return s.repo.List(ctx) }
 func (s *svc) Get(ctx context.Context, id uint) (*User, error) { return s.repo.Get(ctx, id) }
 func (s *svc) Update(ctx context.Context, id uint, in User) (*User, error) {
