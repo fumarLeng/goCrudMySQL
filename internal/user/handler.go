@@ -1,11 +1,11 @@
 package user
 
 import (
-	"context"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 
-	"github.com/gin-gonic/gin"
+	"goCrudMySQL/common"
 )
 
 type Handler struct{ svc Service }
@@ -32,15 +32,16 @@ func (handler *Handler) Register(routerGroup *gin.RouterGroup) {
 func (handler *Handler) create(c *gin.Context) {
 	var in CreateUserRq
 	if err := c.ShouldBindJSON(&in); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		common.Fail(c, common.CodeInvalidParam, "請求參數格式錯誤："+err.Error())
 		return
 	}
 	out, err := handler.svc.Create(c.Request.Context(), in)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		code, msg := common.MapError(err)
+		common.Fail(c, code, msg)
 		return
 	}
-	c.JSON(http.StatusCreated, out)
+	common.Success(c, out)
 }
 
 // list godoc
@@ -49,12 +50,12 @@ func (handler *Handler) create(c *gin.Context) {
 // @Produce json
 // @Router /users [get]
 func (handler *Handler) list(c *gin.Context) {
-	us, err := handler.svc.List(context.Background())
+	us, err := handler.svc.List(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		common.Fail(c, http.StatusInternalServerError, "取得使用者清單失敗："+err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, us)
+	common.Success(c, us)
 }
 
 // get godoc
@@ -66,15 +67,15 @@ func (handler *Handler) list(c *gin.Context) {
 func (handler *Handler) get(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		common.Fail(c, http.StatusBadRequest, "使用者 ID 格式錯誤")
 		return
 	}
 	u, err := handler.svc.Get(c.Request.Context(), uint(id))
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		common.Fail(c, http.StatusNotFound, "找不到指定的使用者："+err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, u)
+	common.Success(c, u)
 }
 
 // update godoc
@@ -83,25 +84,26 @@ func (handler *Handler) get(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "使用者 ID"
-// @Param user body User true "使用者資料"
+// @Param user body UpdateUserRequest true "更新使用者資料"
+// @Success 200 {object} UserResponse
 // @Router /users/{id} [put]
 func (handler *Handler) update(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		common.Fail(c, http.StatusBadRequest, "使用者 ID 格式錯誤")
 		return
 	}
-	var in User
+	var in UpdateUserRequest
 	if err := c.ShouldBindJSON(&in); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		common.Fail(c, http.StatusBadRequest, "請求參數格式錯誤："+err.Error())
 		return
 	}
 	u, err := handler.svc.Update(c.Request.Context(), uint(id), in)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		common.Fail(c, http.StatusNotFound, "更新失敗："+err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, u)
+	common.Success(c, u)
 }
 
 // delete godoc
@@ -113,12 +115,12 @@ func (handler *Handler) update(c *gin.Context) {
 func (handler *Handler) delete(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		common.Fail(c, http.StatusBadRequest, "使用者 ID 格式錯誤")
 		return
 	}
 	if err := handler.svc.Delete(c.Request.Context(), uint(id)); err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		common.Fail(c, http.StatusNotFound, "刪除失敗："+err.Error())
 		return
 	}
-	c.Status(http.StatusNoContent)
+	common.Success(c, nil)
 }

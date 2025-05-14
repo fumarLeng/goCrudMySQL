@@ -14,31 +14,33 @@ definitions:
     - email
     - name
     type: object
-  user.User:
+  user.UpdateUserRequest:
+    properties:
+      email:
+        example: leo@example.com
+        type: string
+      name:
+        description: 選填，使用 pointer 區分有無填寫
+        example: Leo
+        type: string
+    type: object
+  user.UserResponse:
     properties:
       createdAt:
-        description: 建立時間
         example: "2025-05-13T12:00:00Z"
         type: string
       email:
-        description: 使用者 Email
         example: leo@example.com
         type: string
       id:
-        description: 使用者 ID
         example: 1
         type: integer
       name:
-        description: 使用者名稱
         example: Leo
         type: string
       updatedAt:
-        description: 最後更新時間
         example: "2025-05-13T12:30:00Z"
         type: string
-    required:
-    - email
-    - name
     type: object
 host: localhost:8088
 info:
@@ -104,15 +106,19 @@ paths:
         name: id
         required: true
         type: integer
-      - description: 使用者資料
+      - description: 更新使用者資料
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/user.User'
+          $ref: '#/definitions/user.UpdateUserRequest'
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserResponse'
       summary: 更新使用者
       tags:
       - users

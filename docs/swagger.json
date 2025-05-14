@@ -80,16 +80,23 @@
                         "required": true
                     },
                     {
-                        "description": "使用者資料",
+                        "description": "更新使用者資料",
                         "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.User"
+                            "$ref": "#/definitions/user.UpdateUserRequest"
                         }
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.UserResponse"
+                        }
+                    }
+                }
             },
             "delete": {
                 "produces": [
@@ -132,35 +139,40 @@
                 }
             }
         },
-        "user.User": {
+        "user.UpdateUserRequest": {
             "type": "object",
-            "required": [
-                "email",
-                "name"
-            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "leo@example.com"
+                },
+                "name": {
+                    "description": "選填，使用 pointer 區分有無填寫",
+                    "type": "string",
+                    "example": "Leo"
+                }
+            }
+        },
+        "user.UserResponse": {
+            "type": "object",
             "properties": {
                 "createdAt": {
-                    "description": "建立時間",
                     "type": "string",
                     "example": "2025-05-13T12:00:00Z"
                 },
                 "email": {
-                    "description": "使用者 Email",
                     "type": "string",
                     "example": "leo@example.com"
                 },
                 "id": {
-                    "description": "使用者 ID",
                     "type": "integer",
                     "example": 1
                 },
                 "name": {
-                    "description": "使用者名稱",
                     "type": "string",
                     "example": "Leo"
                 },
                 "updatedAt": {
-                    "description": "最後更新時間",
                     "type": "string",
                     "example": "2025-05-13T12:30:00Z"
                 }

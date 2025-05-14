@@ -16,3 +16,16 @@ type CreateUserRq struct {
 	Name  string `json:"name" binding:"required" example:"Leo"`                    // 使用者名稱
 	Email string `json:"email" binding:"required,email" example:"leo@example.com"` // 使用者 Email
 }
+
+type UpdateUserRequest struct {
+	Name  *string `json:"name,omitempty" example:"Leo"` // 選填，使用 pointer 區分有無填寫
+	Email *string `json:"email,omitempty" binding:"omitempty,email" example:"leo@example.com"`
+}
+
+type UserResponse struct {
+	ID        uint      `json:"id" example:"1"`
+	Name      string    `json:"name" example:"Leo"`
+	Email     string    `json:"email" example:"leo@example.com"`
+	CreatedAt time.Time `json:"createdAt" example:"2025-05-13T12:00:00Z"`
+	UpdatedAt time.Time `json:"updatedAt" example:"2025-05-13T12:30:00Z"`
+}
